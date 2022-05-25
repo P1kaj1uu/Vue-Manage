@@ -13,3 +13,9 @@ export const userLoginAPI = ({ username, password }) => axios({
     password
   }
 })
+
+// 左侧菜单权限列表数据
+export const menuListAPI = () => axios({
+  url: '/menus',
+  method: 'GET'
+})
