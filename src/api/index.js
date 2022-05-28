@@ -70,3 +70,54 @@ export const deleteUserAPI = ({ id }) => axios({
   url: `/users/${id}`,
   method: 'DELETE'
 })
+
+// 所有权限列表
+export const getAllRightsAPI = () => axios({
+  url: '/rights/list',
+  method: 'GET'
+})
+
+// 角色列表
+export const getAllRolesAPI = () => axios({
+  url: '/roles',
+  method: 'GET'
+})
+
+// 删除角色指定权限
+export const deleteRoleRightAPI = ({ roleId, rightId }) => axios({
+  url: `/roles/${roleId}/rights/${rightId}`,
+  method: 'DELETE'
+})
+
+// 角色授权
+export const addRoleRightAPI = ({ roleId, rids }) => axios({
+  url: `/roles/${roleId}/rights`,
+  method: 'POST',
+  data: {
+    rids
+  }
+})
+
+// 所有权限列表(树形结构)
+export const getAllRightsTreeAPI = () => axios({
+  url: '/rights/tree',
+  method: 'GET'
+})
+
+// 角色授权
+export const addRoleRightTreeAPI = ({ roleId, rids }) => axios({
+  url: `/roles/${roleId}/rights`,
+  method: 'POST',
+  data: {
+    rids
+  }
+})
+
+// 分配用户角色
+export const addUserRoleAPI = ({ id, rid }) => axios({
+  url: `/users/${id}/role`,
+  method: 'PUT',
+  data: {
+    rid
+  }
+})

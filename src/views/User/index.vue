@@ -26,7 +26,9 @@
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary" @click="addDialogFormVisible = true">添加用户</el-button>
+          <el-button type="primary" @click="addDialogFormVisible = true"
+            >添加用户</el-button
+          >
         </el-col>
       </el-row>
 
@@ -91,6 +93,7 @@
                 type="warning"
                 icon="el-icon-setting"
                 size="small"
+                @click="assignRole(scope.row)"
                 circle
               ></el-button>
             </el-tooltip>
@@ -112,8 +115,18 @@
     </el-card>
 
     <!-- 添加用户的对话框 -->
-    <el-dialog title="添加用户" :visible.sync="addDialogFormVisible" width="50%" @close="quitAdd">
-      <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px">
+    <el-dialog
+      title="添加用户"
+      :visible.sync="addDialogFormVisible"
+      width="50%"
+      @close="quitAdd"
+    >
+      <el-form
+        :model="addForm"
+        :rules="addFormRules"
+        ref="addFormRef"
+        label-width="70px"
+      >
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addForm.username" autocomplete="off"></el-input>
         </el-form-item>
@@ -134,10 +147,24 @@
     </el-dialog>
 
     <!-- 修改用户的对话框 -->
-    <el-dialog title="修改用户" :visible.sync="editDialogFormVisible" width="50%" @close="quitEdit">
-      <el-form :model="editForm" :rules="addFormRules" ref="editFormRef" label-width="70px">
+    <el-dialog
+      title="修改用户"
+      :visible.sync="editDialogFormVisible"
+      width="50%"
+      @close="quitEdit"
+    >
+      <el-form
+        :model="editForm"
+        :rules="addFormRules"
+        ref="editFormRef"
+        label-width="70px"
+      >
         <el-form-item label="用户名">
-          <el-input disabled v-model="editForm.username" autocomplete="off"></el-input>
+          <el-input
+            disabled
+            v-model="editForm.username"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="editForm.email" autocomplete="off"></el-input>
@@ -151,12 +178,39 @@
         <el-button type="primary" @click="editUser">确定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 分配角色的对话框 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="setDialogFormVisible"
+      width="50%"
+      :before-close="setDialogClose"
+    >
+      <p>当前的用户：{{ userRole.username }}</p>
+      <p>当前的角色：{{ userRole.role_name }}</p>
+      <p>
+        分配新角色：
+        <el-select v-model="roleValue" placeholder="请选择">
+          <el-option
+            v-for="item in userRoleList"
+            :key="item.id"
+            :label="item.roleName"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+      </p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setDialogClose">取 消</el-button>
+        <el-button type="primary" @click="setRoleFn">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 // 导入封装的api方法
-import { getUsersListAPI, editUserStatusAPI, addUserAPI, queryUserByIdAPI, editUserAPI, deleteUserAPI } from '../../api/index'
+import { getUsersListAPI, editUserStatusAPI, addUserAPI, queryUserByIdAPI, editUserAPI, deleteUserAPI, addUserRoleAPI, getAllRolesAPI } from '../../api/index'
 
 export default {
   name: 'user',
@@ -190,6 +244,13 @@ export default {
       addDialogFormVisible: false,
       // 用于控制修改用户的对话框是否显示
       editDialogFormVisible: false,
+      // 用于控制分配角色的对话框是否显示
+      setDialogFormVisible: false,
+      userRoleId: '',
+      userRole: {},
+      // 用于存储角色列表数据
+      userRoleList: [],
+      roleValue: '',
       // 添加用户表单的数据
       addForm: {
         username: '',
@@ -393,6 +454,50 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    // 当点击分配角色按钮时
+    async assignRole (userRole) {
+      const res = await getAllRolesAPI({})
+      if (res.data.meta.status !== 200) {
+        this.$message.error('获取角色列表失败')
+      } else {
+        this.userRoleList = res.data.data
+        this.userRoleId = userRole.id
+        this.userRole = userRole
+        this.setDialogFormVisible = true
+      }
+    },
+    // 当关闭分配角色的对话框时
+    setDialogClose () {
+      this.setDialogFormVisible = false
+      this.roleValue = ''
+    },
+    // 当点击分配角色的确定按钮时
+    async setRoleFn () {
+      if (!this.roleValue) {
+        this.$message.error('请选择要分配的角色')
+        return false
+      }
+      const res = await addUserRoleAPI({
+        id: this.userRoleId,
+        rid: this.roleValue
+      })
+      if (res.data.meta.status !== 200) {
+        this.$message.error('分配失败')
+      } else {
+        this.$message({
+          type: 'success',
+          message: '分配成功!'
+        })
+        this.roleValue = ''
+        this.setDialogFormVisible = false
+        // 重新查询用户列表
+        await getUsersListAPI({
+          query: this.query,
+          pagenum: this.pagenum,
+          pagesize: this.pagesize
+        })
+      }
     }
   }
 }
