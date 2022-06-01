@@ -24,3 +24,31 @@ body,
 .el-pagination {
   margin-top: 20px;
 }
+
+.el-cascader-panel {
+  height: 250px;
+}
+
+.el-alert {
+  margin-bottom: 20px;
+}
+
+.el-steps {
+  margin-bottom: 20px;
+}
+
+.el-step__title {
+  font-size: 14px;
+}
+
+.el-checkbox {
+  margin: 0 5px 0 0;
+}
+
+.quill-editor {
+  margin-bottom: 15px;
+}
+
+.ql-editor {
+  min-height: 300px;
+}

@@ -121,3 +121,166 @@ export const addUserRoleAPI = ({ id, rid }) => axios({
     rid
   }
 })
+
+// 商品分类数据列表
+export const getCategoriesListAPI = ({ type, pagenum, pagesize }) => axios({
+  url: '/categories',
+  method: 'GET',
+  params: {
+    type,
+    pagenum,
+    pagesize
+  }
+})
+
+// 添加分类
+export const addCategoriesListAPI = ({ catPid, catName, catLevel }) => axios({
+  url: '/categories',
+  method: 'POST',
+  data: {
+    cat_pid: catPid,
+    cat_name: catName,
+    cat_level: catLevel
+  }
+})
+
+// 删除分类
+export const deleteCategoryAPI = ({ id }) => axios({
+  url: `/categories/${id}`,
+  method: 'DELETE'
+})
+
+// 编辑提交分类
+export const editCategoryAPI = ({ id, catName }) => axios({
+  url: `categories/${id}`,
+  method: 'PUT',
+  data: {
+    cat_name: catName
+  }
+})
+
+// 获取商品参数列表
+export const getAttributesListAPI = ({ id, sel }) => axios({
+  url: `/categories/${id}/attributes`,
+  method: 'GET',
+  params: {
+    sel
+  }
+})
+
+// 添加动态参数或者静态属性
+export const addAttributesListAPI = ({ id, attrName, attrSel, attrVals = null }) => axios({
+  url: `/categories/${id}/attributes`,
+  method: 'POST',
+  data: {
+    attr_name: attrName,
+    attr_sel: attrSel,
+    attr_vals: attrVals
+  }
+})
+
+// 删除参数
+export const deleteAttributesListAPI = ({ id, attrid }) => axios({
+  url: `/categories/${id}/attributes/${attrid}`,
+  method: 'DELETE'
+})
+
+// 根据ID查询参数
+export const queryAttributesListAPI = ({ id, attrId, attrSel, attrVals = null }) => axios({
+  url: `/categories/${id}/attributes/${attrId}`,
+  method: 'GET',
+  params: {
+    attr_sel: attrSel,
+    attr_vals: attrVals
+  }
+})
+
+// 编辑提交参数
+export const editAttributesListAPI = ({ id, attrId, attrName, attrSel, attrVals = null }) => axios({
+  url: `/categories/${id}/attributes/${attrId}`,
+  method: 'PUT',
+  data: {
+    attr_name: attrName,
+    attr_sel: attrSel,
+    attr_vals: attrVals
+  }
+})
+
+// 商品列表数据
+export const getGoodsListAPI = ({ query = null, pagenum, pagesize }) => axios({
+  url: '/goods',
+  method: 'GET',
+  params: {
+    query,
+    pagenum,
+    pagesize
+  }
+})
+
+// 添加商品
+export const addGoodsListAPI = ({ goodsName, goodsCat, goodsPrice, goodsNumber, goodsWeight, goodsIntroduce = null, pics = null, attrs = null }) => axios({
+  url: '/goods',
+  method: 'POST',
+  data: {
+    goods_name: goodsName,
+    goods_cat: goodsCat,
+    goods_price: goodsPrice,
+    goods_number: goodsNumber,
+    goods_weight: goodsWeight,
+    goods_introduce: goodsIntroduce,
+    pics,
+    attrs
+  }
+})
+
+// 根据ID查询商品
+export const queryGoodsByIdAPI = ({ id }) => axios({
+  url: `/goods/${id}`,
+  method: 'GET'
+})
+
+// 编辑提交商品
+export const editGoodsListByIdAPI = ({ id, goodsName, goodsPrice, goodsNumber, goodsWeight, goodsIntroduce = null, pics = null, attrs = null }) => axios({
+  url: `/goods/${id}`,
+  method: 'PUT',
+  data: {
+    goods_name: goodsName,
+    goods_price: goodsPrice,
+    goods_number: goodsNumber,
+    goods_weight: goodsWeight,
+    goods_introduce: goodsIntroduce,
+    pics,
+    attrs
+  }
+})
+
+// 删除商品
+export const deleteGoodsByIdAPI = ({ id }) => axios({
+  url: `/goods/${id}`,
+  method: 'DELETE'
+})
+
+// 图片上传
+export const uploadFileAPI = ({ file }) => axios({
+  url: '/upload',
+  method: 'POST',
+  data: {
+    file
+  }
+})
+
+// 添加商品
+export const addGoodsAPI = ({ goodsName, goodsCat, goodsPrice, goodsNumber, goodsWeight, goodsIntroduce = null, pics = null, attrs = null }) => axios({
+  url: '/goods',
+  method: 'POST',
+  data: {
+    goods_name: goodsName,
+    goods_cat: goodsCat,
+    goods_price: goodsPrice,
+    goods_number: goodsNumber,
+    goods_weight: goodsWeight,
+    goods_introduce: goodsIntroduce,
+    pics,
+    attrs
+  }
+})
