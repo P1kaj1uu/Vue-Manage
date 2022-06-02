@@ -284,3 +284,46 @@ export const addGoodsAPI = ({ goodsName, goodsCat, goodsPrice, goodsNumber, good
     attrs
   }
 })
+
+// 订单数据列表
+export const getSalesListAPI = ({ query = null, pagenum, pagesize, userId = null, payStatus = null, isSend = null, orderFapiaoTitle = null, orderFapiaoCompany = null, orderFapiaoContent = null, consigneeAddr = null }) => axios({
+  url: '/orders',
+  method: 'GET',
+  params: {
+    query,
+    pagenum,
+    pagesize,
+    user_id: userId,
+    pay_status: payStatus,
+    is_send: isSend,
+    order_fapiao_title: orderFapiaoTitle,
+    order_fapiao_company: orderFapiaoCompany,
+    order_fapiao_content: orderFapiaoContent,
+    consignee_addr: consigneeAddr
+  }
+})
+
+// 修改订单状态
+export const editSalesListAPI = ({ id, isSend, orderPay, orderPrice, orderNumber, payStatus }) => axios({
+  url: `/orders/${id}`,
+  method: 'PUT',
+  data: {
+    is_send: isSend,
+    order_pay: orderPay,
+    order_price: orderPrice,
+    order_number: orderNumber,
+    pay_status: payStatus
+  }
+})
+
+// 查看订单详情
+export const querySalesByIdAPI = ({ id }) => axios({
+  url: `/orders/${id}`,
+  method: 'GET'
+})
+
+// 查看物流信息
+export const queryLogisticsAPI = ({ id }) => axios({
+  url: `/kuaidi/${id}`,
+  method: 'GET'
+})
