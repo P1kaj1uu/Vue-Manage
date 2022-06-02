@@ -327,3 +327,9 @@ export const queryLogisticsAPI = ({ id }) => axios({
   url: `/kuaidi/${id}`,
   method: 'GET'
 })
+
+// 基于时间统计的折线图
+export const getDataChartAPI = () => axios({
+  url: '/reports/type/1',
+  method: 'GET'
+})
